@@ -1,0 +1,129 @@
+views
+<odoo>
+    <!-- Product Category Form View Inheritance -->
+    <record id="product_category_form_inherit_discount" model="ir.ui.view">
+        <field name="name">product.category.form.inherit.discount</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group>
+                    <!-- Adding the 'apply_discount' boolean field -->
+                    <field name="apply_discount"/>
+                </group>
+
+                <!-- Group that will only be visible if 'apply_discount' is True -->
+                <group name="discount_group">
+                    <field name="discount_ids" context="{'default_category_id': id}" options="{'no_create': True}">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="minimum_quantity"/>
+                            <field name="maximum_quantity"/>
+                            <field name="discount_percent"/>
+                            <field name="discount_value"/>
+                        </tree>
+                        <form string="Discount Details">
+                            <group>
+                                <field name="name"/>
+                                <field name="minimum_quantity"/>
+                                <field name="maximum_quantity"/>
+                                <field name="discount_percent"/>
+                                <field name="discount_value"/>
+                            </group>
+                        </form>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+wizard
+<!-- views/sale_discount_wizard_view.xml -->
+<odoo>
+    <!-- Category Discount Wizard Form View -->
+    <record id="view_category_discount_wizard" model="ir.ui.view">
+        <field name="name">category.discount.wizard.form</field>
+        <field name="model">category.discount.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Category Discount Wizard">
+                <sheet>
+                    <group>
+                        <field name="category_id"/>
+                        <field name="quantity"/>
+                        <field name="name"/>
+                        <field name="discount"/>
+                    </group>
+                    <footer>
+                        <button string="Apply Discount" type="object" name="action_apply_discount" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Sale Order Form View Inheritance -->
+    <record id="view_sale_order_form_inherit_discount" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.discount</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <button name="action_check_discount" type="object" string="Check Discount" class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+ model
+from odoo import models, fields
+class ProductCategory(models.Model):
+    _inherit = 'product.category'
+
+    apply_discount = fields.Boolean("Apply Discount")
+    minimum_quantity = fields.Integer("Min qty")
+    maximum_quantity = fields.Integer("Max Qty")
+    discount_percent = fields.Float("Disc%")
+    discount_value = fields.Float("Disc Value")
+    category_id = fields.Many2one('product.category', string="Product Category")
+    discount_ids = fields.One2many('discount', 'category_id', string="Discounts")
+
+class Discount(models.Model):
+    _name = 'discount'
+    _description = 'Discounts'
+
+    name = fields.Char("Name")
+    minimum_quantity = fields.Integer("Min qty")
+    maximum_quantity = fields.Integer("Max Qty")
+    discount_percent = fields.Float("Disc%")
+    discount_value = fields.Float("Disc Value")
+    category_id = fields.Many2one('product.category', string="Product Category")
+
+
+wizard
+from odoo import models, fields
+class CategoryDiscountWizard(models.TransientModel):
+    _name = 'category.discount.wizard'
+    _description = 'Category Discount Wizard'
+
+    category_id = fields.Many2one('product.category', string='Category')
+    quantity = fields.Float(string='Quantity')
+    name = fields.Many2one('product.template', string='Name')
+    discount = fields.Float(string='Discount (%)')
+
+    def action_apply_discount(self):
+        # Add the logic to handle the discount application
+        pass
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    def action_check_discount(self):
+        return {
+            'name': 'Category Discount Wizard',
+            'type': 'ir.actions.act_window',
+            'res_model': 'category.discount.wizard',
+            'view_mode': 'form',
+            'view_id': self.env.ref('inventory_discount.view_category_discount_wizard').id,
+            'target': 'new',
+        }

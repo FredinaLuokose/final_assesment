@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <!-- Inherit the form view to add the Correction button -->
+        <record id="view_move_form_inherit_correction_button" model="ir.ui.view">
+            <field name="name">account.move.form.correction.button</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_correction_wizard"
+                            string="Correction"
+                            type="object"
+                            class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Define the wizard form view -->
+        <record id="view_correction_wizard_form" model="ir.ui.view">
+            <field name="name">account.move.correction.wizard.form</field>
+            <field name="model">account.move.correction.wizard</field>
+            <field name="arch" type="xml">
+                <!-- Set the correct title for the wizard form -->
+                <form string="Invoices Correction">
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <footer>
+                        <button string="Post" type="object" name="action_post_correction" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

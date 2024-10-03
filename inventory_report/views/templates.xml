@@ -1,0 +1,65 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<odoo>-->
+<!--    &lt;!&ndash; Define the report action &ndash;&gt;-->
+<!--    <record id="backorder_operations_report_action" model="ir.actions.report">-->
+<!--        <field name="name">Backorder Operations</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">inventory_report.report_delivery_bk_document</field>-->
+<!--        <field name="report_file">inventory_report.report_delivery_bk_document</field>-->
+<!--        <field name="binding_model_id" ref="stock.model_stock_picking"/>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Define the template &ndash;&gt;-->
+<!--    <template id="report_delivery_bk_document">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-call="web.external_layout">-->
+<!--                <t t-set="picking" t-value="docs[0]"/>-->
+
+<!--                &lt;!&ndash; Header Information &ndash;&gt;-->
+<!--                <div class="page">-->
+<!--                    <h2><span t-field="picking.name">Picking Reference</span></h2>-->
+<!--                    <div class="row mt32 mb32">-->
+<!--                        <div class="col-6">-->
+<!--                            <strong>Receive From:</strong>-->
+<!--                            <div t-field="picking.partner_id"/>-->
+<!--                        </div>-->
+<!--                        <div class="col-6">-->
+<!--                            <strong>Scheduled Date:</strong>-->
+<!--                            <p t-field="picking.scheduled_date"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Products Table with Borders &ndash;&gt;-->
+<!--                    <table class="table table-sm mt32" style="border: 1px solid black; border-collapse: collapse;">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th style="border: 1px solid black; padding: 5px;"><strong>Product</strong></th>-->
+<!--                                <th class="text-center" style="border: 1px solid black; padding: 5px;"><strong>Ordered</strong></th>-->
+<!--                                <th class="text-center" style="border: 1px solid black; padding: 5px;"><strong>Delivered</strong></th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                            <tr t-foreach="picking.move_ids_without_package" t-as="move" t-key="move.id">-->
+<!--                                <td style="border: 1px solid black; padding: 5px;">-->
+<!--                                    <span t-field="move.product_id"/>-->
+<!--                                    <p t-field="move.description_picking"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-center" style="border: 1px solid black; padding: 5px;">-->
+<!--                                    <span t-field="move.product_uom_qty"/>-->
+<!--                                    <span t-field="move.product_uom.name"/> &lt;!&ndash; Corrected field here &ndash;&gt;-->
+<!--                                </td>-->
+<!--                                <td class="text-center" style="border: 1px solid black; padding: 5px;">-->
+<!--                                    <span t-field="move.quantity_done"/> &lt;!&ndash; Use quantity_done for delivered &ndash;&gt;-->
+<!--                                    <span t-field="move.product_uom.name"/> &lt;!&ndash; Corrected field here &ndash;&gt;-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+
+<!--                </div>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+<!--</odoo>-->
