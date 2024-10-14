@@ -1,0 +1,68 @@
+<odoo>
+    <data>
+        <!-- Define the form view for the Create Invoice wizard -->
+        <record id="view_create_invoice_wizard" model="ir.ui.view">
+            <field name="name">create.invoice.wizard.form</field>
+            <field name="model">create.invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Invoice">
+                    <group>
+                        <field name="journal_id"/>
+                        <field name="invoice_date"/>
+                    </group>
+                    <footer>
+                        <button string="Submit" type="object" name="action_create_invoice" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Inherit the existing stock.picking.form view to add the Create Invoice button -->
+        <record id="stock_picking_form_inherit_open_invoice_wizard" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit.open.invoice.wizard</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="open_invoice_wizard"
+                            type="object"
+                            string="Create Invoice"
+                            class="btn-primary"
+                            context="{'default_picking_id': id}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Action to open the Create Invoice wizard -->
+        <record id="action_create_invoice_wizard" model="ir.actions.act_window">
+            <field name="name">Create Invoice</field>
+            <field name="res_model">create.invoice.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Server action to trigger the wizard -->
+        <record id="method_open_invoice_wizard" model="ir.actions.server">
+            <field name="name">open_invoice_wizard</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = env.ref('assesment_task.action_create_invoice_wizard').read()[0]
+            </field>
+        </record>
+
+        <!-- Inherit stock.picking.tree (External ID: stock.vpicktree) to add the Invoice column -->
+        <record id="stock_picking_tree_inherit_invoice" model="ir.ui.view">
+            <field name="name">stock.picking.tree.inherit.invoice</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="invoice_id" string="Invoice" widget="many2one"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
