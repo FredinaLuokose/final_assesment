@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "assesment_task",
+    'name': "custom_pricelist_button",
 
     'summary': "Short (1 phrase/line) summary of the module's purpose",
 
@@ -18,12 +18,14 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','stock','account'],
+    'depends': ['base','sale_management','product'],
 
     # always loaded
     'data': [
          'security/ir.model.access.csv',
         'views/views.xml',
+        'views/templates.xml',
+        'wizard/price_list_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

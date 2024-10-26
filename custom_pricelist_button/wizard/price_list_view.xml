@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_sale_order_line_select_pricelist_form" model="ir.ui.view">
+        <field name="name">sale.order.line.select.pricelist.form</field>
+        <field name="model">sale.order.line.select.pricelist</field>
+        <field name="arch" type="xml">
+            <form string="Select Pricelist">
+                <sheet>
+                    <group>
+                        <field name="order_line_id" invisible="1"/>
+                        <field name="product_id" readonly="1"/>
+                        <field name="price_list_ids" >
+                            <tree editable="bottom">
+                                <field name="select" string="Select"/>
+                                <field name="pricelist_id"/>
+                            </tree>
+                        </field>
+                        <button string="Apply" type="object" name="action_select_pricelist" class="btn-primary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

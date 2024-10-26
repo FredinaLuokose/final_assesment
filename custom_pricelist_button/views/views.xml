@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="pricelist_button_form_view">
+            <field name="name">pricelist.button.form.view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_subtotal']"
+                       position="after">
+                    <button name="action_select_pricelist" type="object" string="SELECT PRICELIST"
+                            class="oe_highlight"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

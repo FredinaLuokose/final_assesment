@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_line_select_pricelist,sale.order.line.select.pricelist,model_sale_order_line_select_pricelist,base.group_user,1,1,1,1
+access_sale_order_line_select_pricelist_line,sale.order.line.select.pricelist.line,model_sale_order_line_select_pricelist_line,base.group_user,1,1,1,1
+
