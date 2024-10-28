@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="product_stock_wizard" model="ir.ui.view">
+        <field name="name">product_stock_wizard</field>
+        <field name="model">product_low_stock_wizard</field>
+        <field name="arch" type="xml">
+            <form string="stock low"/>
+            <group>
+                <field name="product_id" readonly="1"/>
+            </group>
+            <footer>
+            <button string ="change"  name="change_stock" type="object" cls="btn-primary"/>
+               <button string ="cancel"  name="cancel changes" type="object" cls="btn-primary"/>
+            </footer>
+        </field>
+    </record>
+</odoo>
+
